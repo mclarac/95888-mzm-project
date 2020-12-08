@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_eea5694fdb224ab2a4d723aadfef1126 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_eea5694fdb224ab2a4d723aadfef1126" ></div>
+        
+</body>
+<script>    
+    
+            var map_eea5694fdb224ab2a4d723aadfef1126 = L.map(
+                "map_eea5694fdb224ab2a4d723aadfef1126",
+                {
+                    center: [40.7056, -74.0083],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 15,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_ec8123e1ef8a4c7ea570173c5d7a8d6b = L.tileLayer(
+                "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png",
+                {"attribution": "Map tiles by \u003ca href=\"http://stamen.com\"\u003eStamen Design\u003c/a\u003e, under \u003ca href=\"http://creativecommons.org/licenses/by/3.0\"\u003eCC BY 3.0\u003c/a\u003e. Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_eea5694fdb224ab2a4d723aadfef1126);
+        
+    
+            var circle_937402ed51d4453d88d5b63c0bc72a22 = L.circle(
+                [40.7056, -74.0083],
+                {"bubblingMouseEvents": true, "color": "#3186cc", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#3186cc", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 500, "stroke": true, "weight": 3}
+            ).addTo(map_eea5694fdb224ab2a4d723aadfef1126);
+        
+    
+        var popup_f6bad251a5c54b298b5ca93238a03950 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f70bd9bbc34c4b56af40f5701989ed7c = $(`<div id="html_f70bd9bbc34c4b56af40f5701989ed7c" style="width: 100.0%; height: 100.0%;">10005</div>`)[0];
+            popup_f6bad251a5c54b298b5ca93238a03950.setContent(html_f70bd9bbc34c4b56af40f5701989ed7c);
+        
+
+        circle_937402ed51d4453d88d5b63c0bc72a22.bindPopup(popup_f6bad251a5c54b298b5ca93238a03950)
+        ;
+
+        
+    
+    
+            var marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2 = L.markerClusterGroup(
+                {}
+            );
+            map_eea5694fdb224ab2a4d723aadfef1126.addLayer(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var marker_2ee848d7cfff4a29827f6c86391b0c29 = L.marker(
+                [40.705368, -74.010359],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_90dbbbe6246e4a23ad6b414d21961388 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "bus", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_2ee848d7cfff4a29827f6c86391b0c29.setIcon(icon_90dbbbe6246e4a23ad6b414d21961388);
+        
+    
+        var popup_3b9d88dd25404f2bb66f6267176841ba = L.popup({"maxWidth": "100%"});
+
+        
+            var html_03e46f3e19824245979ea0033a6514d3 = $(`<div id="html_03e46f3e19824245979ea0033a6514d3" style="width: 100.0%; height: 100.0%;">Transportation</div>`)[0];
+            popup_3b9d88dd25404f2bb66f6267176841ba.setContent(html_03e46f3e19824245979ea0033a6514d3);
+        
+
+        marker_2ee848d7cfff4a29827f6c86391b0c29.bindPopup(popup_3b9d88dd25404f2bb66f6267176841ba)
+        ;
+
+        
+    
+    
+            marker_2ee848d7cfff4a29827f6c86391b0c29.bindTooltip(
+                `<div>
+                     Beaver Street Parking Llc
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5c572e425f4d4344b8944e4416e72dab = L.marker(
+                [40.706531, -74.01059000000002],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_224179e422cd46b4bb6dd5190ab562f6 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "building", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_5c572e425f4d4344b8944e4416e72dab.setIcon(icon_224179e422cd46b4bb6dd5190ab562f6);
+        
+    
+        var popup_d335863644fb4d748753cd46359d8a6f = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ba520f5c61be4b4ba98c3871f98c997c = $(`<div id="html_ba520f5c61be4b4ba98c3871f98c997c" style="width: 100.0%; height: 100.0%;">Cultural institutions</div>`)[0];
+            popup_d335863644fb4d748753cd46359d8a6f.setContent(html_ba520f5c61be4b4ba98c3871f98c997c);
+        
+
+        marker_5c572e425f4d4344b8944e4416e72dab.bindPopup(popup_d335863644fb4d748753cd46359d8a6f)
+        ;
+
+        
+    
+    
+            marker_5c572e425f4d4344b8944e4416e72dab.bindTooltip(
+                `<div>
+                     Citizen Schools, Inc.
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cee0918d6d5c4cb6bb9716201c832326 = L.marker(
+                [40.7051120017, -74.00607174619998],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_1960b03abb694c7dae42500527068643 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "heartbeat", "iconColor": "white", "markerColor": "blue", "prefix": "fa"}
+            );
+            marker_cee0918d6d5c4cb6bb9716201c832326.setIcon(icon_1960b03abb694c7dae42500527068643);
+        
+    
+        var popup_b38b5cc073ed4005bba3c3f80f204858 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_f8d050fea3564ae9895ec4c9a2ff76e8 = $(`<div id="html_f8d050fea3564ae9895ec4c9a2ff76e8" style="width: 100.0%; height: 100.0%;">Health care</div>`)[0];
+            popup_b38b5cc073ed4005bba3c3f80f204858.setContent(html_f8d050fea3564ae9895ec4c9a2ff76e8);
+        
+
+        marker_cee0918d6d5c4cb6bb9716201c832326.bindPopup(popup_b38b5cc073ed4005bba3c3f80f204858)
+        ;
+
+        
+    
+    
+            marker_cee0918d6d5c4cb6bb9716201c832326.bindTooltip(
+                `<div>
+                     George Rosenfeld Ctr For Recovery Ir
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_cf6c5f1b1ee743db81ef0ee7614d8e77 = L.marker(
+                [40.707406194499995, -74.0081854582],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_bdcaf651f7aa429f90eb2d5405b4f977 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "bus", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_cf6c5f1b1ee743db81ef0ee7614d8e77.setIcon(icon_bdcaf651f7aa429f90eb2d5405b4f977);
+        
+    
+        var popup_6f39ea980706405d80b4f7ff78929b20 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_a474f44318224ca99d7cb0b517848850 = $(`<div id="html_a474f44318224ca99d7cb0b517848850" style="width: 100.0%; height: 100.0%;">Transportation</div>`)[0];
+            popup_6f39ea980706405d80b4f7ff78929b20.setContent(html_a474f44318224ca99d7cb0b517848850);
+        
+
+        marker_cf6c5f1b1ee743db81ef0ee7614d8e77.bindPopup(popup_6f39ea980706405d80b4f7ff78929b20)
+        ;
+
+        
+    
+    
+            marker_cf6c5f1b1ee743db81ef0ee7614d8e77.bindTooltip(
+                `<div>
+                     Liberty Street Realty Llc
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_901cad67fdc34c17a1c1a879da9f68f5 = L.marker(
+                [40.7064991255, -74.0091201025],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_ca491769751142a1bd76dab7e38964dc = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "building", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_901cad67fdc34c17a1c1a879da9f68f5.setIcon(icon_ca491769751142a1bd76dab7e38964dc);
+        
+    
+        var popup_c7d620b8a8884266ab36328f44b66302 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_cbfa72197d554676bd129f17a08147c2 = $(`<div id="html_cbfa72197d554676bd129f17a08147c2" style="width: 100.0%; height: 100.0%;">Cultural institutions</div>`)[0];
+            popup_c7d620b8a8884266ab36328f44b66302.setContent(html_cbfa72197d554676bd129f17a08147c2);
+        
+
+        marker_901cad67fdc34c17a1c1a879da9f68f5.bindPopup(popup_c7d620b8a8884266ab36328f44b66302)
+        ;
+
+        
+    
+    
+            marker_901cad67fdc34c17a1c1a879da9f68f5.bindTooltip(
+                `<div>
+                     Museum Of American Finance
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_43ee74621d694c439450810dba7cec6f = L.marker(
+                [40.7034863769, -74.0081313355],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_5b36120e1e6b4dda85a2758ad03176e6 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "building", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_43ee74621d694c439450810dba7cec6f.setIcon(icon_5b36120e1e6b4dda85a2758ad03176e6);
+        
+    
+        var popup_fe2c5b7ef0d8413cb662d4b132408d76 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_fa0398b6b2d14cd69d1aed3190f1d4dc = $(`<div id="html_fa0398b6b2d14cd69d1aed3190f1d4dc" style="width: 100.0%; height: 100.0%;">Cultural institutions</div>`)[0];
+            popup_fe2c5b7ef0d8413cb662d4b132408d76.setContent(html_fa0398b6b2d14cd69d1aed3190f1d4dc);
+        
+
+        marker_43ee74621d694c439450810dba7cec6f.bindPopup(popup_fe2c5b7ef0d8413cb662d4b132408d76)
+        ;
+
+        
+    
+    
+            marker_43ee74621d694c439450810dba7cec6f.bindTooltip(
+                `<div>
+                     New York City Police Museum
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ba661afba0564e27ad9a1a7033037e62 = L.marker(
+                [40.7051120017, -74.00607174619998],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_2c3a6c8d0ad8481aa8625684c4ea73a7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "heartbeat", "iconColor": "white", "markerColor": "blue", "prefix": "fa"}
+            );
+            marker_ba661afba0564e27ad9a1a7033037e62.setIcon(icon_2c3a6c8d0ad8481aa8625684c4ea73a7);
+        
+    
+        var popup_6b927bfdafe540b9b14007806df1c8a6 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_0689ccd9ad7b4836b70548121c6b15fd = $(`<div id="html_0689ccd9ad7b4836b70548121c6b15fd" style="width: 100.0%; height: 100.0%;">Health care</div>`)[0];
+            popup_6b927bfdafe540b9b14007806df1c8a6.setContent(html_0689ccd9ad7b4836b70548121c6b15fd);
+        
+
+        marker_ba661afba0564e27ad9a1a7033037e62.bindPopup(popup_6b927bfdafe540b9b14007806df1c8a6)
+        ;
+
+        
+    
+    
+            marker_ba661afba0564e27ad9a1a7033037e62.bindTooltip(
+                `<div>
+                     Odyssey House Ir 6
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ff42919db1e242709f4891c87c97358e = L.marker(
+                [40.7051120017, -74.00607174619998],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_84fb4ae96a3047d7800eee2b5469c0f6 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "heartbeat", "iconColor": "white", "markerColor": "blue", "prefix": "fa"}
+            );
+            marker_ff42919db1e242709f4891c87c97358e.setIcon(icon_84fb4ae96a3047d7800eee2b5469c0f6);
+        
+    
+        var popup_b4dc7885764640f9b916fe963a6ec12b = L.popup({"maxWidth": "100%"});
+
+        
+            var html_db221dc8654543c9bd4f56a1b7e4a8ce = $(`<div id="html_db221dc8654543c9bd4f56a1b7e4a8ce" style="width: 100.0%; height: 100.0%;">Health care</div>`)[0];
+            popup_b4dc7885764640f9b916fe963a6ec12b.setContent(html_db221dc8654543c9bd4f56a1b7e4a8ce);
+        
+
+        marker_ff42919db1e242709f4891c87c97358e.bindPopup(popup_b4dc7885764640f9b916fe963a6ec12b)
+        ;
+
+        
+    
+    
+            marker_ff42919db1e242709f4891c87c97358e.bindTooltip(
+                `<div>
+                     Odyssey House, Inc. Cr
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f5228fc3cd9442fc841ff97604f8dd0b = L.marker(
+                [40.7051120017, -74.00607174619998],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_cf72cf6ee2224702a4b96632fc18b6db = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "heartbeat", "iconColor": "white", "markerColor": "blue", "prefix": "fa"}
+            );
+            marker_f5228fc3cd9442fc841ff97604f8dd0b.setIcon(icon_cf72cf6ee2224702a4b96632fc18b6db);
+        
+    
+        var popup_77227dcb8bc5470e8a401fc10ebf1bc7 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_246bd5de4c9441b5980f9c6e4b623fd8 = $(`<div id="html_246bd5de4c9441b5980f9c6e4b623fd8" style="width: 100.0%; height: 100.0%;">Health care</div>`)[0];
+            popup_77227dcb8bc5470e8a401fc10ebf1bc7.setContent(html_246bd5de4c9441b5980f9c6e4b623fd8);
+        
+
+        marker_f5228fc3cd9442fc841ff97604f8dd0b.bindPopup(popup_77227dcb8bc5470e8a401fc10ebf1bc7)
+        ;
+
+        
+    
+    
+            marker_f5228fc3cd9442fc841ff97604f8dd0b.bindTooltip(
+                `<div>
+                     Odyssey House, Inc. Ir
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_77577163ad864226967608f0ea1c644c = L.marker(
+                [40.7051120017, -74.00607174619998],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_394b432aad534f588e8f2a0b78dd32a3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "heartbeat", "iconColor": "white", "markerColor": "blue", "prefix": "fa"}
+            );
+            marker_77577163ad864226967608f0ea1c644c.setIcon(icon_394b432aad534f588e8f2a0b78dd32a3);
+        
+    
+        var popup_9f8ab618cd684acf99545735c49393be = L.popup({"maxWidth": "100%"});
+
+        
+            var html_25249fc28e3347c3a55220ee53afee97 = $(`<div id="html_25249fc28e3347c3a55220ee53afee97" style="width: 100.0%; height: 100.0%;">Health care</div>`)[0];
+            popup_9f8ab618cd684acf99545735c49393be.setContent(html_25249fc28e3347c3a55220ee53afee97);
+        
+
+        marker_77577163ad864226967608f0ea1c644c.bindPopup(popup_9f8ab618cd684acf99545735c49393be)
+        ;
+
+        
+    
+    
+            marker_77577163ad864226967608f0ea1c644c.bindTooltip(
+                `<div>
+                     Odyssey House, Inc. Op
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b527d2e75ca34b9ebaa196939b444271 = L.marker(
+                [40.7051120017, -74.00607174619998],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_b5a5c63555da4f079a238ba65cff26a3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "heartbeat", "iconColor": "white", "markerColor": "blue", "prefix": "fa"}
+            );
+            marker_b527d2e75ca34b9ebaa196939b444271.setIcon(icon_b5a5c63555da4f079a238ba65cff26a3);
+        
+    
+        var popup_f6d4960348794cba8b159ce6aee046b7 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_4f26f2f884834640aaa3eb1e86d0ac54 = $(`<div id="html_4f26f2f884834640aaa3eb1e86d0ac54" style="width: 100.0%; height: 100.0%;">Health care</div>`)[0];
+            popup_f6d4960348794cba8b159ce6aee046b7.setContent(html_4f26f2f884834640aaa3eb1e86d0ac54);
+        
+
+        marker_b527d2e75ca34b9ebaa196939b444271.bindPopup(popup_f6d4960348794cba8b159ce6aee046b7)
+        ;
+
+        
+    
+    
+            marker_b527d2e75ca34b9ebaa196939b444271.bindTooltip(
+                `<div>
+                     Odyssey Manor Ir 1
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_af217e24676740019110132813f40956 = L.marker(
+                [40.7051120017, -74.00607174619998],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_e0e8455ffc434da992cbb773691f2a4f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "heartbeat", "iconColor": "white", "markerColor": "blue", "prefix": "fa"}
+            );
+            marker_af217e24676740019110132813f40956.setIcon(icon_e0e8455ffc434da992cbb773691f2a4f);
+        
+    
+        var popup_43034a778370486990305f949774087a = L.popup({"maxWidth": "100%"});
+
+        
+            var html_80b55889595d4bc4856a3a52a243d6fb = $(`<div id="html_80b55889595d4bc4856a3a52a243d6fb" style="width: 100.0%; height: 100.0%;">Health care</div>`)[0];
+            popup_43034a778370486990305f949774087a.setContent(html_80b55889595d4bc4856a3a52a243d6fb);
+        
+
+        marker_af217e24676740019110132813f40956.bindPopup(popup_43034a778370486990305f949774087a)
+        ;
+
+        
+    
+    
+            marker_af217e24676740019110132813f40956.bindTooltip(
+                `<div>
+                     Odyssey Manor Ir 2
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_dcfe5ad75ab44b609841644d34d3ee0a = L.marker(
+                [40.7061827693, -74.00679505859999],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_d7e25492cebd4fcc87dbf1cd1ffdba10 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "bus", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_dcfe5ad75ab44b609841644d34d3ee0a.setIcon(icon_d7e25492cebd4fcc87dbf1cd1ffdba10);
+        
+    
+        var popup_ebd8f83e039d46869c10f010a8058871 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_c33f2de811be4c418b14982997735e01 = $(`<div id="html_c33f2de811be4c418b14982997735e01" style="width: 100.0%; height: 100.0%;">Transportation</div>`)[0];
+            popup_ebd8f83e039d46869c10f010a8058871.setContent(html_c33f2de811be4c418b14982997735e01);
+        
+
+        marker_dcfe5ad75ab44b609841644d34d3ee0a.bindPopup(popup_ebd8f83e039d46869c10f010a8058871)
+        ;
+
+        
+    
+    
+            marker_dcfe5ad75ab44b609841644d34d3ee0a.bindTooltip(
+                `<div>
+                     Pine-Water Garage Llc
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b6e1ce9c4fe64272a29adca989c6163a = L.marker(
+                [40.7061996184, -74.0099200745],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_1ed74e77c0984225b0a46ae0ff5cc3e2 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "bus", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_b6e1ce9c4fe64272a29adca989c6163a.setIcon(icon_1ed74e77c0984225b0a46ae0ff5cc3e2);
+        
+    
+        var popup_e957fe406c1d448bb0f09ff19c25d154 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_3a45b825a93f450ea4737dd3b72fc776 = $(`<div id="html_3a45b825a93f450ea4737dd3b72fc776" style="width: 100.0%; height: 100.0%;">Transportation</div>`)[0];
+            popup_e957fe406c1d448bb0f09ff19c25d154.setContent(html_3a45b825a93f450ea4737dd3b72fc776);
+        
+
+        marker_b6e1ce9c4fe64272a29adca989c6163a.bindPopup(popup_e957fe406c1d448bb0f09ff19c25d154)
+        ;
+
+        
+    
+    
+            marker_b6e1ce9c4fe64272a29adca989c6163a.bindTooltip(
+                `<div>
+                     Wall Park 45 Llc
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7e495a04a5af4936a0979138068cd83e = L.marker(
+                [40.7037421285, -74.0070456789],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_bca5c91182144dbeaef3d00a773f3d7f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "bus", "iconColor": "white", "markerColor": "red", "prefix": "fa"}
+            );
+            marker_7e495a04a5af4936a0979138068cd83e.setIcon(icon_bca5c91182144dbeaef3d00a773f3d7f);
+        
+    
+        var popup_62fed9cc379044c5b3462092e8e32b49 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_ed2e2a27cd404cfc885fcffc33d2fba7 = $(`<div id="html_ed2e2a27cd404cfc885fcffc33d2fba7" style="width: 100.0%; height: 100.0%;">Transportation</div>`)[0];
+            popup_62fed9cc379044c5b3462092e8e32b49.setContent(html_ed2e2a27cd404cfc885fcffc33d2fba7);
+        
+
+        marker_7e495a04a5af4936a0979138068cd83e.bindPopup(popup_62fed9cc379044c5b3462092e8e32b49)
+        ;
+
+        
+    
+    
+            marker_7e495a04a5af4936a0979138068cd83e.bindTooltip(
+                `<div>
+                     Wall St/Pier 11 Ferry Terminal
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b1ca65d6ba0d421899c6b2530ce0809c = L.marker(
+                [40.7047650449, -74.0059423389],
+                {}
+            ).addTo(marker_cluster_0343bf50c58549d693ced8d9ea1b8fe2);
+        
+    
+            var icon_87aca97ba6e74bc0a2d45fee498e06f9 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "building", "iconColor": "white", "markerColor": "green", "prefix": "fa"}
+            );
+            marker_b1ca65d6ba0d421899c6b2530ce0809c.setIcon(icon_87aca97ba6e74bc0a2d45fee498e06f9);
+        
+    
+        var popup_1075c806c42a40d9860919f9e0c6d025 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_56c2e35f0b164a6f83d7ae556f89ddbb = $(`<div id="html_56c2e35f0b164a6f83d7ae556f89ddbb" style="width: 100.0%; height: 100.0%;">Cultural institutions</div>`)[0];
+            popup_1075c806c42a40d9860919f9e0c6d025.setContent(html_56c2e35f0b164a6f83d7ae556f89ddbb);
+        
+
+        marker_b1ca65d6ba0d421899c6b2530ce0809c.bindPopup(popup_1075c806c42a40d9860919f9e0c6d025)
+        ;
+
+        
+    
+    
+            marker_b1ca65d6ba0d421899c6b2530ce0809c.bindTooltip(
+                `<div>
+                     Wbai
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
