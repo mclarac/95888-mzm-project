@@ -1,0 +1,269 @@
+/* ====================================================
+      MAIN STYLES - PROYECT ALCALDIA BUCARAMANGA.
+   ====================================================*/
+
+
+/*  Cover
+===============================================================*/
+
+.cover {
+    background-image: url(../assets/MZMcover.jpg);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-size: cover;
+    position: fixed;
+}
+
+.cover .login {
+    position: fixed;
+    padding: 15px;
+    /*background-color: #009933;*/
+    width: 20%;
+    margin-top: 25%;
+    margin-left: 40%;
+    border-style: groove;
+    box-shadow: 3px 3px 1px grey;
+    border-radius: 15px;
+}
+
+.login .dist_log {
+    margin-top: 2%;
+}
+
+.login .icon {
+    display: block;
+    max-width: 2px;
+    max-height: 2px;
+    width: auto;
+    height: auto;
+}
+
+.button {
+    margin-top: 0%;
+    margin-left: 37%;
+}
+
+.error_message {
+    margin-top: 4%;
+    margin-left: 27%;
+    color: #ff3333;
+    font-style: bold;
+}
+
+
+/*  Styles for Nav
+===============================================================*/
+
+.title_nav {
+    margin-left: 32px;
+    margin-top: 10px;
+    color: #bfbfbf !important;
+}
+
+.icons_nav {
+    height: 32px;
+    width: 32px;
+    vertical-align: top;
+    filter: invert(98%) brightness(92%) contrast(92%);
+}
+
+.image_s {
+    margin-left: 76px;
+    height: 52px;
+    width: 52px;
+    vertical-align: top;
+}
+
+.center_nav {
+    justify-content: center;
+}
+
+
+/* General Content
+===============================================================*/
+
+.content {
+    right: 0;
+    margin-left: 3%;
+    margin-top: 1%;
+    margin-right: 2%;
+    padding: 1em;
+    /*background-color: #0066ff;*/
+}
+
+.campaing_title {
+    border-style: none none groove none;
+    border-radius: 25px;
+    background-color: #fa7268;
+    padding-top: 6px;
+    margin-left: 15%;
+    margin-right: 15%;
+    box-shadow: 3px 3px 2px lightgrey;
+}
+
+.white_font {
+    color: #ffffff;
+}
+
+.margin_top {
+    margin-top: 5%;
+}
+
+
+/* Page 1
+===============================================================*/
+
+
+/* -- Filter -- */
+
+#p1_social_programs_selector .custom-control-input:checked~.custom-control-label::before {
+    background-color: #636468;
+    border-color: #E2E2E5;
+}
+
+#p1_deprivation_type_selector .custom-control-input:checked~.custom-control-label::before {
+    background-color: #636468;
+    border-color: #E2E2E5;
+}
+
+
+/* -- Tarjetas -- */
+
+.labelcard {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: -13px;
+}
+
+.labelcard_title {
+    text-align: center;
+}
+
+.div_bot {
+    margin-top: 1.5%;
+}
+
+
+/* Options dropdown */
+
+.p1_options .VirtualizedSelectFocusedOption {
+    background-color: #595959;
+    color: #ffffff;
+}
+
+.p1_options .Select-value {
+    background-color: #595959;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.p1_options .Select-value-icon {
+    border-right: 1px solid
+}
+
+
+/* Change Color of Radio and Selector
+=============================================================== */
+
+
+/* Radio items */
+
+.p2_radio .custom-control-input:checked~.custom-control-label::before {
+    background-color: #fa7268;
+    border-color: #ea6258;
+}
+
+
+/* Slider */
+
+.p2_slider .rc-slider-track {
+    background-color: #fa7268;
+}
+
+.p2_slider .rc-slider-dot-active {
+    border-color: #fa7268;
+    border: solid 2px #fa7268;
+}
+
+.p2_slider .rc-slider-handle {
+    background-color: #fa7268;
+    border-color: #fa7268;
+}
+
+.p2_slider .rc.slider-handle:hover {
+    border-color: #fa7268;
+}
+
+.p2_slider .rc.slider-handle-active:active {
+    border-color: #fa7268;
+}
+
+
+/* Options dropdown */
+
+.p2_options .VirtualizedSelectFocusedOption {
+    background-color: #fa7268;
+    color: #ffffff;
+}
+
+.p2_options .Select-value {
+    background-color: #fa7268;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.p2_options .Select-value-icon {
+    border-right: 1px solid;
+    color: #ffffff;
+}
+
+¨
+/* Color of speedmeter*/
+
+.cAPXWV {
+    color: #404040 !important;
+}
+
+
+/* Page 1 Sliders
+=============================================================== */
+
+.rc-slider-track {
+    background-color: #484848;
+}
+
+.rc-slider-dot-active {
+    border-color: #484848;
+    border: solid 2px #484848;
+}
+
+.rc-slider-handle {
+    background-color: #484848;
+    border-color: #484848;
+}
+
+.rc.slider-handle:hover {
+    border-color: #484848;
+}
+
+.rc.slider-handle-active:active {
+    border-color: #484848;
+}
+
+
+/* Change Color of Buttons
+=============================================================== */
+
+*[data-dash-is-loading="true"]{
+    visibility: hidden;
+}
+*[data-dash-is-loading="true"]::before{
+    content: "Loading...";
+    display: inline-block;
+    color: white
+    visibility: visible;
+}
