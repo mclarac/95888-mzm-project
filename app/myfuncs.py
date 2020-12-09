@@ -67,6 +67,7 @@ def compute_distances(rentals, facilities, ranks, miles = 0.25):
     This functions computes the distance between all rentals
     and surroundings (or facilities) and keeps only facilities from
     which the distance to the rental (by zipcode) is less than 'miles'
+    This function depends on the 'distance' function.
 
     Parameters:
     ----------
@@ -109,12 +110,31 @@ def compute_distances(rentals, facilities, ranks, miles = 0.25):
     return distances_df
 
 def get_ordering(distances_df):
+    '''
+    This function computes and index based on user's ranking of
+    surroundings (or facilites) and returns an ordering for 
+    listings recommendations. The index assigns more relevance 
+    to rentals that are closer to the facilities within the 
+    top user's preference. Both the number of facilities and 
+    the proximity are taken into account. 
+
+    Parameters:
+    -----------
+        distances_df = pandas dataframe returned by the 
+        compute_distances() function
     
+    Returns:
+    --------
+    list type with zipcodes ordering from best to worst
+    '''
     n_zipcodes = distances_df.zipcode_x.nunique()
-    n_listings, _ = distances_df.shape
+    n_rows, _ = distances_df.shape
     
-    if n_listings == 0:
+    # if it's an empty dataframe, it means that we don't 
+    # have any properties with user's selected choices
+    if n_rows == 0:
         return None
+    # if there is only one zipcode, no ordering needed
     elif n_zipcodes == 1:
         return list(distances_df.zipcode_x)
     else:
@@ -127,18 +147,24 @@ def get_ordering(distances_df):
     
         order['index'] = order['place_index'] / order['distance']
         order = order.sort_values(by = 'facgroup')
-    
+
+        # this function is defined within the get_ordering function because
+        # it's the only function that uses it.
         def min_max_t(x):
+            '''
+            This function takes a pandas series or list
+            and returns a re-scaled series from 0 to 100
+            '''
             return (x - x.min()) / (x.max() - x.min()) * 100
-        
+
+        # the places selected by the user
         top_three_places = list(distances_df.facgroup.unique())
-    
         order_ = pd.DataFrame({})
         for i in top_three_places:
             tmp = order[order['facgroup'] == i]
             tmp['index'] = min_max_t(tmp['index'].values)
             order_ = pd.concat([order_, tmp], axis = 0)
-    
+
         order_['lambda'] = (4 - order_['rank']) / 3
         order_['index_t'] = order_['index'] * order_['lambda']
         order_ = order_.pivot_table(index = 'zipcode_x', columns = 'facgroup', values = 'index_t').reset_index()
@@ -150,23 +176,64 @@ def get_ordering(distances_df):
 def save_map(filtered_df, distances_df, best_zipcode, path = './maps/'):
     
     import datetime
-    
-    icons_dict = {'Health care': {'icon': 'heartbeat', 'color': 'blue'},
-                  'Transportation': {'icon': 'bus', 'color': 'red'},
-                  'Cultural institutions': {'icon': 'building', 'color': 'green'}}
+    import random
 
+    # generate as many random colors as the number of facilites
+    all_facilities = set(distances_df['facgroup'])
+
+    n_facilities = len(all_facilities)
+
+    colors = ["#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
+            for i in range(n_facilities)]
+
+    # list of icons taken from https://fontawesome.com/icons
+    icons_d = {
+        'Adults services': 'user-cog',
+        'Camps': 'free-code-camp',
+        'Child services and welfare': 'baby',
+        'City agency parking, maintenance, and storage': 'parking',
+        'Cultural institutions': 'building',
+        'Day care and pre-kindergarten': 'hand-holding-heart',
+        'Health care': 'heartbeat',
+        'Higher education': 'university',
+        'Historical sites': 'landmark',
+        'Human services': 'fingerprint',
+        'Libraries': 'book-reader',
+        'Offices, training, and testing': 'chalkboard-teacher',
+        'Parks and plazas': 'tree',
+        'Public safety': 'hard-hat',
+        'Restaurants': 'utensils',
+        'Schools (k-12)': 'school',
+        'Transportation': 'bus',
+        'Vocational and proprietary schools': 'chalkboard-teacher',
+        'Youth services': 'hand-holding-heart'
+        }
+
+    # generate a dictionary a color and an icon for each facility group
+    icons_dict = {}
+    for i, f in enumerate(all_facilities):
+        try:
+            d = {'icon': icons_d[f], 'color': colors[i]}
+        except:
+            d = {'icon': 'info-sign', 'color': colors[i]}
+        icons_dict[f] = d
+    
+    # the location of top recommendation
     location = filtered_df.loc[0, ['latitude', 'longitude']].to_list()
-    
+    # the facilities that are in proximity to top recommendation
     top_place_df = distances_df[distances_df['zipcode_y'] == best_zipcode]
-    
+    # since there are many rentals for each zipcode (top recommendation)
+    # we remove duplicates to preserve one instance of each facility
     top_place_df = top_place_df.drop_duplicates(subset = ['facname'])
     
+    # generate the map with location of top recommendation
     m = folium.Map(
         location = location,
         tiles = 'Stamen Toner',
         zoom_start = 15
     )
     
+    # create a radius circle for top recommendation
     folium.Circle(
         radius = 500,
         location = location,
@@ -176,6 +243,8 @@ def save_map(filtered_df, distances_df, best_zipcode, path = './maps/'):
         fill_color = '#3186cc'
     ).add_to(m)
     
+    # now, we create a MarketCluster; i.e. if several facilities are very
+    # close to each other, they are clustered to enhance readability
     marker_cluster = MarkerCluster().add_to(m)
 
     for i, r in top_place_df.iterrows():
@@ -190,11 +259,14 @@ def save_map(filtered_df, distances_df, best_zipcode, path = './maps/'):
                 icon = icons_dict[facgroup]['icon'],
                 prefix = 'fa')
         ).add_to(marker_cluster)
-        
+    
+    # create a timestamp to now when the map was generated
     current_time = datetime.datetime.now().date()
     
+    # create the path where the map is going to be saved
     path = path + str(current_time) + '_' + best_zipcode + '.html'
     
+    # save the map into an html file
     m.save(path)
     
     return
