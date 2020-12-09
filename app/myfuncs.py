@@ -9,8 +9,8 @@ def filter_rentals(price_range, zipcodes, rental_types, laundry, parking, pets, 
     mask = (
         (df['price'] >= min_price) & (df['price'] <= max_price) &
         (df['laundry_code'] == laundry) &
-        (df['parking'] == parking) &
-        (df['pets'] == pets)
+        (df['parking_code'] == parking) &
+        (df['pet_code'] == pets)
         )
     
     df = df[mask]
@@ -33,13 +33,16 @@ def distance(lat1, lon1, lat2, lon2):
     This function takes two coordinates and returns 
     the distance (in miles) between the two locations
 
-    Params:
+    Parameters:
+    ----------
         lat1: float. Latitude of location 1
         lon2: float. Longitude of location 1
         lat2: float. Latitude of location 2
         lon1: float. Longitude of location 2
     
-    returns: distance between two coordinates in miles
+    Returns: 
+    --------
+    distance between two coordinates in miles (float)
     '''
     # approximate radius of earth in km
     R = 6373.0
@@ -59,7 +62,28 @@ def distance(lat1, lon1, lat2, lon2):
     
     return d
 
-def compute_distances(rentals, facilities, ranks):
+def compute_distances(rentals, facilities, ranks, miles = 0.25):
+    '''
+    This functions computes the distance between all rentals
+    and surroundings (or facilities) and keeps only facilities from
+    which the distance to the rental (by zipcode) is less than 'miles'
+
+    Parameters:
+    ----------
+        rentals: pandas dataframe with all rentals with the
+        columns zipcode, latitude and longitude
+        facilities: pandas dataframe with surroundings (or facilities)
+        with the columns latitude, longitude and facgroup
+        rank : a dictionary with the ordering of user's preference.
+        For example {'Health care': 1, 'Transportation': 2, 'Restaurants': 3}
+        miles: the cutoff to define when a facility is close enough to a rental.
+        Default is 0.25 (walking distance)
+    
+    Returns:
+    -------
+    a dataframe with facilities that are within x miles from each rental
+    (defined by the 'miles' param)
+    '''
     
     distances_df = pd.DataFrame({})
     zip_codes = []
@@ -80,8 +104,7 @@ def compute_distances(rentals, facilities, ranks):
     distances_df = distances_df.merge(right = facilities, on = 'place_index')
     distances_df['rank'] = distances_df['facgroup'].map(ranks)
     
-    # d_quantile = distances_df['distance'].quantile(.01)
-    distances_df = distances_df[distances_df['distance'] <= 0.25]
+    distances_df = distances_df[distances_df['distance'] <= miles]
 
     return distances_df
 
