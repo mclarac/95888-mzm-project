@@ -17,13 +17,19 @@ MZM is a local app that provides recommendations of property rental listings bas
 
 At its core, this product depends heavily on the [Dash](https://pypi.org/project/dash/) package. All other requirements can be found in [requirements.txt](https://github.com/mclarac/95888-mzm-project/blob/main/requirements.txt). All the dependencies can be installed by opening the Anaconda prompt and navigating to the root folder. Then type:
 ```
-pip install -r requirements.txt
+conda install --yes --file requirements.txt
 ```
+
+Followed by:
+```
+pip install sodapy
+```
+
 ## Data Sources
 In order for the application to work correctly, the following files need to be stored in the path `./cleaned-data/`:
 
 * `manhattan-surroundings_cleaned.csv`: This data contains information about 35,000+ public and private facilities and program sites that are owned, operated, funded, licensed or certified by a City, State, or Federal agency in the City of New York. It captures facilities that generally help to shape quality of life in the city’s neighborhoods, including schools, day cares, parks, libraries, among others. To know more, please visit [Facilities Database - Shapefile](https://data.cityofnewyork.us/City-Government/Facilities-Database-Shapefile/2fpa-bnsx). This data is retrieved and cleaned using the script `nyc-socrataAPI-requests.py`.
-* `manhattan-crime_cleaned.csv`: This data contains every criminal complaint NYC. To know more, please visit [# NYPD Complaint Data Current (Year To Date)](https://dev.socrata.com/foundry/data.cityofnewyork.us/5uac-w243). This data is retrieved and cleaned using the script `nyc-socrataAPI-requests.py`.
+* `manhattan-crime_cleaned.csv`: This data contains every criminal complaint NYC. To know more, please visit [NYPD Complaint Data Current (Year To Date)](https://dev.socrata.com/foundry/data.cityofnewyork.us/5uac-w243). This data is retrieved and cleaned using the script `nyc-socrataAPI-requests.py`.
 * `nyc-TNA.geojson`: This data contains boundaries of Neighborhood Tabulation Areas as created by the NYC Department of City Planning using whole census tracts from the 2010 Census as building blocks. These aggregations of census tracts are subsets of New York City's 55 Public Use Microdata Areas (PUMAs). To know more, please visit [Neighborhood Tabulation Areas (NTA)](https://data.cityofnewyork.us/City-Government/Neighborhood-Tabulation-Areas-NTA-/cpf4-rkhq) - Direct download.
 * `manhattan-rental_cleaned.csv`: This data contains apartment rental listings in Manhattan with detailed information, such as an address, ratings, the price for each floor plan, pet policies, parking facilities, laundry facilities, etc. It was web scraped (from [site 1](...) and [site 2](...)) and cleaned using the script `name-of-script.py`.
 * `yelp-restaurants_cleaned.csv`: This data contains restaurants in Manhattan with detailed information, such as address, ratings, price level, food types, etc. It was web scraped (from [Yelp](https://www.yelp.com)) and cleaned using the script `name-of-script.py`.
