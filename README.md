@@ -7,7 +7,7 @@ Final project
 Group members:
 
 * Mengyao Xu - mengyaox@andrew.cmu.edu
-* Lu Zhang - luzhang3@andrew.cmu.edu)
+* Lu Zhang - luzhang3@andrew.cmu.edu
 * María Lara C - mlaracue@andrew.cmu.edu
 
 # MZM
@@ -23,6 +23,7 @@ conda install --yes --file requirements.txt
 Followed by:
 ```
 pip install sodapy
+pip install pgeocode
 ```
 
 ## Data Sources
@@ -38,7 +39,7 @@ In order for the application to work correctly, the following files need to be s
 The script `nyc-socrataAPI-requests.py` reads and uses an APP token, a key ID, and a key secret. In order to avoid Professor Ostlund and TAs to sign up to NYC Open Data for an app token, the file `nycopendata-API-key.txt` will be provided so they'll be able to run the script without any problems.
 
 ## Running the app
-To run the app go to command prompt (or Anaconda prompt) and navigate to the directory where the app is located (inside the folder `./app/)` - keep in mind that the root folder *must* contain the folders `./app/` and `./cleaned-data/`. Then, just type:
+To run the app go to the Anaconda prompt and navigate to the directory where the app is located (inside the folder `./app/)` - keep in mind that the root folder *must* contain the folders `./app/` and `./cleaned-data/`. Then, just type:
 ```
 app.py
 ```
