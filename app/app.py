@@ -18,38 +18,13 @@ import os
 import datetime
 
 # read the data
-facilities_db = pd.read_csv(
-    '../cleaned-data/manhattan-surroundings_cleaned.csv', 
-    dtype = {'zipcode':str},
-    index_col = 0
-)
-
-facilities_db = facilities_db.rename(columns = {'nta':'ntacode'})
-crime_geom = pd.read_csv('../cleaned-data/manhattan-crimes_data-cleaned.csv', parse_dates = ['datetime'])
+facilities_db = pd.read_csv('../cleaned-data/manhattan-surroundings_cleaned.csv', dtype = {'zipcode':str})
+crime_geom = pd.read_csv('../cleaned-data/manhattan-crime_cleaned.csv', parse_dates = ['datetime'])
 crime_count = crime_geom.groupby(['ntaname', 'latitude', 'longitude']).size().to_frame('count').reset_index()
 crime_count = crime_count.sort_values(by = 'count', ascending = False).reset_index(drop = True)
 crime_count = crime_count.rename(columns = {'latitude':'lat', 'longitude':'lon'})
 
-nyc_ntas = gpd.read_file('../raw-data/nyc-TNA.geojson', driver = "GeoJSON")
-
-lower_manhattan = ['Clinton', 
-                   'Midtown-Midtown South', 
-                   'Turtle Bay-East Midtown', 
-                   'Murray Hill-Kips Bay', 
-                   'Hudson Yards-Chelsea-Flatiron-Union Square',
-                   'Gramercy',
-                   'Stuyvesant Town-Cooper Village',
-                   'East Village',
-                   'West Village',
-                   'Lower East Side',
-                   'Chinatown',
-                   'SoHo-TriBeCa-Civic Center-Little Italy',
-                   'Battery Park City-Lower Manhattan'
-                  ]
-
-# lower_manhattan_geom = nyc_ntas[nyc_ntas['ntaname'].isin(lower_manhattan)]
-lower_manhattan_geom = nyc_ntas.copy()
-
+nyc_ntas = gpd.read_file('../cleaned-data/nyc-TNA.geojson', driver = "GeoJSON")
 rental_df = pd.read_csv('../cleaned-data/manhattan-rental_cleaned.csv', dtype = {'zipcode':str})
 rental_df = gpd.GeoDataFrame(
     rental_df, 
@@ -61,10 +36,9 @@ rental_df = gpd.GeoDataFrame(
 rental_df.crs = {'init': 'epsg:4326'}
 rental_df = gpd.sjoin(
     left_df = rental_df, 
-    right_df = lower_manhattan_geom[['geometry', 'ntacode', 'ntaname']], 
+    right_df = nyc_ntas[['geometry', 'ntacode', 'ntaname']], 
     how = 'inner'
 )
-
 cols = ['ntaname', 'zipcode', 'name', 'address', 'contact', 'rating', 'type', 'price']
 df = rental_df[cols].sort_values(by = ['price', 'rating'], ascending = [True, False])
 
@@ -77,7 +51,7 @@ facilities = sorted(list(facilities_db['facgroup'].unique()))
 rental_types = ['Studio', '1 Bedroom', '2 Bedrooms', '3 Bedrooms', '4+ Bedrooms']
 
 # authentication
-users = {'admin':'123456', 'user1':'555478'}
+users = {'admin':'123456', 'user1':'xzbm-VEeLRTM~7)#'}
 
 # controls
 zipcode_opts = [{'label': zipcode, 'value': zipcode} for zipcode in zipcodes]
@@ -398,7 +372,7 @@ recommendations = dbc.Container([
                     html.Iframe(
                         id = 'map',
                         style = {'border': 'none', 'width': '100%', 'height': 350},
-                        srcDoc = open('./maps/mymap.html', 'r').read(),
+                        srcDoc = open('./maps/NYC-map.html', 'r').read(),
                     ),
 
                     html.Br(),
@@ -430,7 +404,7 @@ yelp = html.Div([
         dbc.Col(
             dbc.Card(    
                 dbc.CardBody([
-                    html.B('Average rating by food type and food level'),
+                    html.B('Average rating by food type and price level'),
                     dcc.Graph(id = 'type-price-rating')
                     ])
             ),
@@ -651,7 +625,7 @@ def update_results(n_clicks, price_range, zipcodes, rental_types, laundry, parki
             '{:,.0f}'.format(df.shape[0]), '0', 
             '', '', '',
             filtered_df.to_dict('records'), 
-            open('./maps/mymap.html', 'r').read(),
+            open('./maps/NYC-map.html', 'r').read(),
             dash.no_update, yelp_data.drop_duplicates(subset = 'restaurant name').to_dict('records'),
             dash.no_update, dash.no_update, dash.no_update, dash.no_update
             ]
