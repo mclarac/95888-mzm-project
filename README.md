@@ -1,7 +1,11 @@
 **95-888D2 Data Focused Python**
+
 *Carnegie Mellon University*
+
 Final project
+
 Group members:
+
 * Mengyao Xu - mengyaox@andrew.cmu.edu
 * Lu Zhang - luzhang3@andrew.cmu.edu)
 * María Lara C - mlaracue@andrew.cmu.edu
