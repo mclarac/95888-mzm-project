@@ -40,7 +40,7 @@ The script `nyc-socrataAPI-requests.py` reads and uses an APP token, a key ID, a
 ## Running the app
 To run the app go to the Anaconda prompt and navigate to the directory where the app is located (inside the folder `./app/)` - keep in mind that the root folder *must* contain the folders `./app/` and `./cleaned-data/`. Then, just type:
 ```
-app.py
+python app.py
 ```
 You should see in the prompt the following message:
 > Running on http://....
