@@ -15,15 +15,14 @@ MZM is a local app that provides recommendations of property rental listings bas
 
 ## Python Dependencies
 
-At its core, this product depends heavily on the [Dash](https://pypi.org/project/dash/) package. All other requirements can be found in [requirements.txt](https://github.com/mclarac/95888-mzm-project/blob/main/requirements.txt). All the dependencies can be installed by opening the Anaconda prompt and navigating to the root folder. Then type:
+At its core, this product depends heavily on the [Dash](https://pypi.org/project/dash/) package. All other requirements can be found in [requirements.txt](https://github.com/mclarac/95888-mzm-project/blob/main/requirements.txt) and requirements-pip.txt. All the dependencies can be installed by opening the Anaconda prompt and navigating to the root folder. Then type:
 ```
-conda install --yes --file requirements.txt
+conda install -c conda-forge --yes --file requirements.txt
 ```
 
 Followed by:
 ```
-pip install sodapy
-pip install pgeocode
+pip install -r requirements-pip.txt
 ```
 
 ## Data Sources
