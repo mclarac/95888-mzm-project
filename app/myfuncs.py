@@ -1,6 +1,6 @@
-import folium
 import pandas       as pd
 from folium.plugins import MarkerCluster
+import folium
 
 def filter_rentals(price_range, zipcodes, rental_types, laundry, parking, pets, df):
     
@@ -85,7 +85,7 @@ def compute_distances(rentals, facilities, ranks, miles = 0.25):
     a dataframe with facilities that are within x miles from each rental
     (defined by the 'miles' param)
     '''
-    
+    rentals = rentals.drop_duplicates(subset = ['zipcode'])
     distances_df = pd.DataFrame({})
     zip_codes = []
     left_index = []
@@ -136,7 +136,7 @@ def get_ordering(distances_df):
         return None
     # if there is only one zipcode, no ordering needed
     elif n_zipcodes == 1:
-        return list(distances_df.zipcode_x)
+        return list(distances_df.zipcode_x.unique())
     else:
         pd.options.mode.chained_assignment = None
         
@@ -171,42 +171,35 @@ def get_ordering(distances_df):
         order_['order'] = order_.sum(axis = 1)
         order_ = order_.sort_values(by = 'order', ascending = False).reset_index(drop = True)
         
-        return list(order_['zipcode_x'])
+        return list(set(order_['zipcode_x']))
 
 def save_map(filtered_df, distances_df, best_zipcode, path = './maps/'):
     
     import datetime
-    import random
-
-    # generate as many random colors as the number of facilites
+    
     all_facilities = set(distances_df['facgroup'])
-
-    n_facilities = len(all_facilities)
-
-    colors = ["#" + ''.join([random.choice('0123456789ABCDEF') for j in range(6)])
-            for i in range(n_facilities)]
+    
+    colors = ['darkpurple', 'lightgreen', 'pink']
 
     # list of icons taken from https://fontawesome.com/icons
     icons_d = {
-        'Adults services': 'user-cog',
-        'Camps': 'free-code-camp',
-        'Child services and welfare': 'baby',
-        'City agency parking, maintenance, and storage': 'parking',
+        'Adults services': 'user',
+        'Camps': 'fire',
+        'Child services and welfare': 'child',
+        'City agency parking, maintenance, and storage': 'automobile',
         'Cultural institutions': 'building',
-        'Day care and pre-kindergarten': 'hand-holding-heart',
+        'Day care and pre-kindergarten': 'heart',
         'Health care': 'heartbeat',
         'Higher education': 'university',
-        'Historical sites': 'landmark',
-        'Human services': 'fingerprint',
-        'Libraries': 'book-reader',
-        'Offices, training, and testing': 'chalkboard-teacher',
+        'Historical sites': 'history',
+        'Human services': 'user',
+        'Libraries': 'book',
+        'Offices, training, and testing': 'university',
         'Parks and plazas': 'tree',
-        'Public safety': 'hard-hat',
-        'Restaurants': 'utensils',
-        'Schools (k-12)': 'school',
+        'Schools (k-12)': 'university',
         'Transportation': 'bus',
-        'Vocational and proprietary schools': 'chalkboard-teacher',
-        'Youth services': 'hand-holding-heart'
+        'Vocational and proprietary schools': 'university',
+        'Youth services': 'heart'
         }
 
     # generate a dictionary a color and an icon for each facility group
@@ -221,16 +214,16 @@ def save_map(filtered_df, distances_df, best_zipcode, path = './maps/'):
     # the location of top recommendation
     location = filtered_df.loc[0, ['latitude', 'longitude']].to_list()
     # the facilities that are in proximity to top recommendation
-    top_place_df = distances_df[distances_df['zipcode_y'] == best_zipcode]
+    top_place_df = distances_df[distances_df['zipcode_x'] == best_zipcode]
     # since there are many rentals for each zipcode (top recommendation)
     # we remove duplicates to preserve one instance of each facility
-    top_place_df = top_place_df.drop_duplicates(subset = ['facname'])
+    # top_place_df = top_place_df.drop_duplicates(subset = ['facname'])
     
     # generate the map with location of top recommendation
     m = folium.Map(
         location = location,
         tiles = 'Stamen Toner',
-        zoom_start = 15
+        zoom_start = 13
     )
     
     # create a radius circle for top recommendation
@@ -263,8 +256,12 @@ def save_map(filtered_df, distances_df, best_zipcode, path = './maps/'):
     # create a timestamp to now when the map was generated
     current_time = datetime.datetime.now().date()
     
+    # specify the facilities that are being used in the file name
+    top_three = ''.join([x[:4] for x in all_facilities])
+
     # create the path where the map is going to be saved
-    path = path + str(current_time) + '_' + best_zipcode + '.html'
+    path = path + str(current_time) + '_' + best_zipcode + '-' +  top_three  + '.html'
+    # path = path + str(current_time) + '_' + best_zipcode + '.html'
     
     # save the map into an html file
     m.save(path)
