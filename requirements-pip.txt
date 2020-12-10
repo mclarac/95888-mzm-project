@@ -1,4 +1,4 @@
-pip install sodapy
-pip install pgeocode
-pip install folium==0.11.0
-pip install dash_bootstrap_components
+sodapy
+pgeocode
+folium==0.11.0
+dash_bootstrap_components
