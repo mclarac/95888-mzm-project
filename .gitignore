@@ -15,3 +15,6 @@ raw-data/
 PlacesAPI-key.txt
 nycopendata-API-key.txt
 nycopendata-app-token.txt
+
+# html maps
+app/maps/
