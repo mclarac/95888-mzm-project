@@ -1,4 +1,3 @@
-import dash
 from dash.dependencies           import Input, Output, State
 from dash.exceptions             import PreventUpdate
 from myfuncs                     import * 
@@ -6,6 +5,7 @@ import dash_core_components      as dcc
 import dash_html_components      as html
 import dash_bootstrap_components as dbc
 import dash_table                as dt
+import dash_table.FormatTemplate as FormatTemplate
 import pandas                    as pd
 import numpy                     as np
 import geopandas                 as gpd
@@ -13,19 +13,48 @@ import plotly.express            as px
 import plotly.graph_objects      as go
 import plotly.figure_factory     as ff
 
+import dash
 import flask
 import os
 import datetime
+import pgeocode
 
+# path where files are stored
+path = '../cleaned-data/'
 # read the data
-facilities_db = pd.read_csv('../cleaned-data/manhattan-surroundings_cleaned.csv', dtype = {'zipcode':str})
-crime_geom = pd.read_csv('../cleaned-data/manhattan-crime_cleaned.csv', parse_dates = ['datetime'])
-crime_count = crime_geom.groupby(['ntaname', 'latitude', 'longitude']).size().to_frame('count').reset_index()
-crime_count = crime_count.sort_values(by = 'count', ascending = False).reset_index(drop = True)
-crime_count = crime_count.rename(columns = {'latitude':'lat', 'longitude':'lon'})
+nyc_ntas = gpd.read_file(path + 'nyc-TNA.geojson', driver = "GeoJSON")
+facilities_db = pd.read_csv(path + 'manhattan-surroundings_cleaned.csv', dtype = {'zipcode':str})
+facilities_db = facilities_db.drop_duplicates()
+crime_geom = pd.read_csv(path + 'manhattan-crime_cleaned.csv', parse_dates = ['datetime'])
+rental_df = pd.read_csv(path + 'manhattan-rental_cleaned.csv', dtype = {'zipcode':str})
+yelp_data = pd.read_csv(path + 'yelp-restaurants_cleaned.csv', dtype = {'Zipcode':str})
 
-nyc_ntas = gpd.read_file('../cleaned-data/nyc-TNA.geojson', driver = "GeoJSON")
-rental_df = pd.read_csv('../cleaned-data/manhattan-rental_cleaned.csv', dtype = {'zipcode':str})
+# some data transformations for more convenience
+# --- rental data ---
+# create a dataframe with latitude and longitude for rental zipcodes
+zipcodes = list(rental_df['zipcode'].unique())
+nomi = pgeocode.Nominatim('us')
+zipcodes_lat_lon = nomi.query_postal_code(zipcodes)
+zipcodes_lat_lon = zipcodes_lat_lon[['postal_code', 'latitude', 'longitude']].rename(columns = {'postal_code':'zipcode'})
+
+# select all vars that refer to rental types
+rental_types = [col for col in rental_df if 'Bed' in col or 'Studio' in col]
+rental_types.sort()
+# change the dataframe format from wide to long
+rental_df = rental_df.melt(
+    id_vars = [col for col in rental_df if col not in rental_types], 
+    var_name = 'type', 
+    value_name = 'price'
+)
+# add a variable 'call for rent' when the rental price is not available
+rental_df['call_for_rent'] = rental_df['price'].apply(lambda x: 1 if x == 'Call for Rent' else 0)
+# change the price to float format
+rental_df['price'] = rental_df['price'].apply(lambda x: np.nan if x == 'Call for Rent' else x).astype(float)
+# remove rows where price is zero
+rental_df = rental_df[rental_df['price'] != 0]
+# append latitude and longitude
+rental_df = rental_df.merge(right = zipcodes_lat_lon, on = 'zipcode')
+# append ntacode and ntaname from shape file of NYC
 rental_df = gpd.GeoDataFrame(
     rental_df, 
     geometry = gpd.points_from_xy(
@@ -39,16 +68,52 @@ rental_df = gpd.sjoin(
     right_df = nyc_ntas[['geometry', 'ntacode', 'ntaname']], 
     how = 'inner'
 )
+# select the columns that will be displayed in the datatable
 cols = ['ntaname', 'zipcode', 'name', 'address', 'contact', 'rating', 'type', 'price']
 df = rental_df[cols].sort_values(by = ['price', 'rating'], ascending = [True, False])
 
-yelp_data = pd.read_csv('../cleaned-data/yelp-restaurants_cleaned.csv', dtype = {'Zipcode':str})
-yelp_cols = ['restaurant name', 'business address', 'food types', 'rating']
+# --- yelp data ---
+# remove some duplicates
+yelp_data = yelp_data.drop_duplicates(subset = ['names'])
+# drop rows where the food type is na (about 2% of records)
+food_types = yelp_data.dropna(subset = ['food types'])
+# create a row for each food type
+food_types = pd.concat([pd.Series(row['names'], row['food types'].split(',')) for _, row in food_types.iterrows()])
+food_types = food_types.reset_index()
+# change the name of the columns
+food_types.columns = ['food type', 'names']
+# remove other characters
+food_types['food type'] = food_types['food type'].str.strip()
+# merge the food types with the original data
+# a new row for each restaurant will be created for each food typr
+yelp_data = yelp_data.merge(food_types, on = 'names')
+# keep only the address
+yelp_data['locations'] = yelp_data['locations'].apply(lambda x: x.split('\n')[0])
+# rename some columns
+yelp_data = yelp_data.rename(
+    columns = {'names':'restaurant name', 'locations': 'business address', 'ratings': 'rating'})
+# change all names to lowercase
+yelp_data.columns = yelp_data.columns.str.lower()
+
+# select the columns from Yelp data that will be used in the datatable
+yelp_cols = ['restaurant name', 
+             'business address', 
+             'phone_number', 
+             'food types', 
+             'rating', 
+             'outdoor seating', 
+             'sit down dinning', 
+             'outdoor seating',
+             'delivery']
+
+# create crime counts for plots
+crime_count = crime_geom.groupby(['ntaname', 'latitude', 'longitude']).size().to_frame('count').reset_index()
+crime_count = crime_count.sort_values(by = 'count', ascending = False).reset_index(drop = True)
+crime_count = crime_count.rename(columns = {'latitude':'lat', 'longitude':'lon'})
 
 # helpers
 zipcodes = sorted(list(rental_df['zipcode'].unique()))
 facilities = sorted(list(facilities_db['facgroup'].unique()))
-rental_types = ['Studio', '1 Bedroom', '2 Bedrooms', '3 Bedrooms', '4+ Bedrooms']
 
 # authentication
 users = {'admin':'123456', 'user1':'xzbm-VEeLRTM~7)#'}
@@ -232,7 +297,8 @@ user_opts = dbc.Container(
                         options = [
                             {'label': 'No laundry', 'value': 0},
                             {'label': 'Laundry Facilities', 'value': 1},
-                            {'label': 'Washer/Dryer In Unit', 'value': 2}
+                            {'label': 'Washer/Dryer Hookup', 'value': 2},
+                            {'label': 'Washer/Dryer In Unit or in every home', 'value': 3}
                             ],
                             value = 0,
                             inline = False,
@@ -280,7 +346,7 @@ user_opts = dbc.Container(
 
             # gerenate recommendations button
             html.Br(),
-            dbc.Button("Generate Recommendations", color="primary", id='generate_button'),
+            dbc.Button("Generate Recommendations", color = "primary", id = 'generate_button'),
 
             # no results alert
             html.Br(),
@@ -320,21 +386,8 @@ recommendations = dbc.Container([
     
     # avg. distance to points of interest
     html.Br(),
-    dbc.Row([
-        dbc.Col(
-            html.Img(
-            src = "https://www.flaticon.com/svg/static/icons/svg/3754/3754360.svg",
-            style = {'height':'100%', 'width':'100%'}
-            ),
-            width = {'size': 1}
-        ),
-        dbc.Col(html.H4('Average distance to points of interest for top recommendation', style = {'vertical-align':'middle'}), 
-        width = {'size': 11}
-        )
-    ],
-    style = {'height':'75%'}
-    ),
-
+    dbc.Row(html.H4('Average distance to points of interest for top recommendation')),
+    
     dbc.Row([
         dbc.Col(
             dbc.Card([
@@ -380,8 +433,20 @@ recommendations = dbc.Container([
                     html.H5('Rental recommendations (ordered from best to worst):'),
                     dt.DataTable(
                         id = 'table',
-                        columns = [{'name': i, 'id': i} for i in df.columns],
+                        columns = [
+                            {'name': 'NTA Name', 'id': 'ntaname'},
+                            {'name': 'Zipcode', 'id': 'zipcode'},
+                            {'name': 'Listing', 'id': 'name'},
+                            {'name': 'Address', 'id': 'address'},
+                            {'name': 'Contact Info', 'id': 'contact'},
+                            # {'name': 'Rating', 'id': 'rating'},
+                            {'name': 'Rental Type', 'id': 'type'},
+                            {'name': 'Price ($)', 'id': 'price', 'type': 'numeric', 'format': FormatTemplate.money(0)}
+                        ],
                         data = df.to_dict('records'),
+                        filter_action = "native",
+                        sort_action = "native",
+                        sort_mode = "multi",
                         style_cell = {'fontSize': 12, 'font-family':'sans-serif'},
                         style_cell_conditional=[
                             {'if': {'column_id': c}, 'textAlign': 'left'} for c in ['name', 'address']
@@ -408,31 +473,55 @@ yelp = html.Div([
                     dcc.Graph(id = 'type-price-rating')
                     ])
             ),
-            width = {'size': 5}
+            width = {'size': 6}
         ),
+    
+        dbc.Col(
+            dbc.Card(    
+                dbc.CardBody([
+                    dcc.Graph(id = 'food-types-bar')
+                    ])
+            ),
+            width = {'size': 6}
+        ),
+    ]),
 
+    dbc.Row(
         dbc.Col(
             dbc.Card(
                 dbc.CardBody(
                     dt.DataTable(
                         id = 'yelp-table',
-                        columns = [{'name': i, 'id': i} for i in yelp_cols],
+                        columns = [
+                            {'name': 'Restaurant Name', 'id': 'restaurant name'},
+                            {'name': 'Business Address', 'id': 'business address'},
+                            {'name': 'Phone', 'id': 'phone_number'},
+                            {'name': 'Food Types', 'id': 'food types'},
+                            {'name': 'Rating', 'id': 'rating'},
+                            {'name': 'Outdoor seating', 'id': 'outdoor seating'},
+                            {'name': 'Sit down dinning', 'id': 'sit down dinning'},
+                            {'name': 'Outdoor seating', 'id': 'outdoor seating'},
+                            {'name': 'Delivery', 'id': 'delivery'}
+                        ],
                         data = yelp_data.drop_duplicates(subset = 'restaurant name').to_dict('records'),
+                        filter_action = "native",
+                        sort_action = "native",
+                        sort_mode = "multi",
                         style_cell = {'fontSize': 12, 'font-family':'sans-serif'},
-                        style_cell_conditional=[
+                        style_cell_conditional = [
                             {'if': {'column_id': c}, 'textAlign': 'left'} for c in ['restaurant name', 'business address']
                         ],
                         style_data_conditional = [
                             {'if': {'row_index': 'odd'}, 'backgroundColor': 'rgb(248, 248, 248)'}
                         ],
                         style_header = {'backgroundColor': 'rgb(230, 230, 230)', 'fontWeight': 'bold', 'textAlign': 'center'},
-                        page_size = 10
+                        page_size = 5
                     )
                     )
             ),
-            width = {'size': 7}
+            width = {'size': 12}
         )
-    ])
+    )
 ])
 
 rentals = html.Div([
@@ -581,6 +670,7 @@ def render_page_content(pathname):
     Output('table', 'data'),
     Output('map', 'srcDoc'),
     Output('type-price-rating', 'figure'),
+    Output('food-types-bar', 'figure'),
     Output('yelp-table', 'data'),
     Output('price-histogram', 'figure'),
     Output('price-type', 'figure'),
@@ -626,7 +716,8 @@ def update_results(n_clicks, price_range, zipcodes, rental_types, laundry, parki
             '', '', '',
             filtered_df.to_dict('records'), 
             open('./maps/NYC-map.html', 'r').read(),
-            dash.no_update, yelp_data.drop_duplicates(subset = 'restaurant name').to_dict('records'),
+            dash.no_update, dash.no_update,
+            yelp_data.drop_duplicates(subset = 'restaurant name').to_dict('records'),
             dash.no_update, dash.no_update, dash.no_update, dash.no_update
             ]
 
@@ -660,7 +751,12 @@ def update_results(n_clicks, price_range, zipcodes, rental_types, laundry, parki
     filtered_df = pd.DataFrame(filtered_df.drop(columns = cols))
     
     current_time = datetime.datetime.now().date()
-    path = './maps/' + str(current_time) + '_' + rentals_rank[0] + '.html'
+    
+    all_facilities = set(distances_df['facgroup'])
+    top_three = ''.join([x[:4] for x in all_facilities])
+    
+    path = './maps/' + str(current_time) + '_' + rentals_rank[0] + '-' +  top_three  + '.html'
+    # path = './maps/' + str(current_time) + '_' + rentals_rank[0] + '.html'
     
     if not os.path.isfile(path):
         save_map(
@@ -670,10 +766,12 @@ def update_results(n_clicks, price_range, zipcodes, rental_types, laundry, parki
         )
     
     # --- plots ---
-    # yelp plot
-    yelp_data_ = yelp_data[yelp_data['Zipcode'] == rentals_rank[0]].sort_values(by = 'rating', ascending = False)
+    # yelp plots
+    yelp_data_ = yelp_data[yelp_data['zipcode'] == rentals_rank[0]].sort_values(by = 'rating', ascending = False)
+
     top_food_types = yelp_data_['food type'].value_counts(normalize = True)[:15].index.to_list()
-    type_price_rating = yelp_data_[yelp_data_['food type'].isin(top_food_types)]
+    type_price_rating = yelp_data_[yelp_data_['food type'].isin(top_food_types)].reset_index(drop = True)
+    type_price_rating = type_price_rating[['food type', 'price level', 'num_rating', 'rating']]
     type_price_rating = (
         type_price_rating
         .groupby(
@@ -701,10 +799,38 @@ def update_results(n_clicks, price_range, zipcodes, rental_types, laundry, parki
         showlegend = False,
         xaxis_title = 'Food Type (top 15)',
         yaxis_title = 'Average Rating',
-        height = 400,
+        height = 380,
         margin = dict(l = 10, r = 10, t = 50, b = 10)
     )
 
+    food_types_count = (
+        yelp_data_['food type']
+        .value_counts(normalize = True)[:25]
+        .to_frame()
+        .reset_index()
+    )
+    food_types_count.columns = ['food type', 'pct']
+    n_max = food_types_count.pct.max()
+    
+    fig6 = px.bar(
+        food_types_count, 
+        y = 'pct', 
+        x = 'food type', 
+        text = 'pct',
+        hover_data = {'pct': ':.2f'}
+    )
+    fig6.update_traces(texttemplate = '%{text:%.2f}', textposition = 'outside')
+    fig6.update_yaxes(visible = True, showticklabels = False)
+    fig6.update_layout(
+        title = 'Most popular food types in zipcode ' + rentals_rank[0],
+        yaxis_title = 'Relative frequency (%)',
+        yaxis = {'range':[0, n_max + .01]},
+        uniformtext_minsize = 6,
+        uniformtext_mode = 'hide',
+        height = 400,
+        margin = dict(l = 10, r = 10, t = 50, b = 10)
+    )
+    
     # rental prices
     nta = str(filtered_df['ntaname'][0])
     prices_data = rental_df[rental_df['ntaname'] == nta]
@@ -837,22 +963,42 @@ def update_results(n_clicks, price_range, zipcodes, rental_types, laundry, parki
         )
 
     # distances cards data
-    template = '{}:\n{:.2f} mi'
-    first_d = distances_df[distances_df['facgroup'] == first].distance.mean()
-    second_d = distances_df[distances_df['facgroup'] == second].distance.mean()
-    third_d = distances_df[distances_df['facgroup'] == third].distance.mean()
+    template = '{}: {:.2f} mi ({} in total)'
+
+    distances_df_ = distances_df[distances_df['zipcode_x'] == rentals_rank[0]]
+    first_n, _ = distances_df_[distances_df_['facgroup'] == first].shape
+    first_d = distances_df_[distances_df_['facgroup'] == first].distance.mean()
+    if not np.isnan(first_d): 
+        first_text = template.format(first, first_d, first_n)
+    else: 
+        first_text = first + ': There are not near facilities'
+    
+    second_n, _ = distances_df_[distances_df_['facgroup'] == second].shape
+    second_d = distances_df_[distances_df_['facgroup'] == second].distance.mean()
+    if not np.isnan(second_d): 
+        second_text = template.format(second, second_d, second_n)
+    else: 
+        second_text = second + ': There are not near facilities'
+
+    third_n, _ = distances_df_[distances_df_['facgroup'] == third].shape
+    third_d = distances_df_[distances_df_['facgroup'] == third].distance.mean()
+    if not np.isnan(third_d): 
+        third_text = template.format(third, third_d, third_n)
+    else: 
+        third_text = third + ': There are not near facilities'
+
+    yelp_data_ = yelp_data_.drop_duplicates(subset = ['restaurant name']).drop_duplicates()
 
     return [
         False, '',
         '{:,.0f}'.format(df.shape[0]), 
         '{:,.0f}'.format(filtered_df.shape[0]),
-        template.format(first, first_d),
-        template.format(second, second_d),
-        template.format(third, third_d),
+        first_text, second_text, third_text,
         filtered_df.to_dict('records'), 
         open(path, 'r').read(),
-        fig5,
-        yelp_data_.drop_duplicates(subset = ['restaurant name']).to_dict('records'),
+        fig5, # yelp data scatter plot
+        fig6, # yelp data bar plot
+        yelp_data_.to_dict('records'),
         fig3, 
         fig4,
         fig, 
