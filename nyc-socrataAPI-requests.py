@@ -109,6 +109,7 @@ print("Making the request for surroundings data")
 myquery = "SELECT facgroup, facname, address, zipcode, nta, latitude, longitude WHERE boro = 'Manhattan'"
 surroundings_data = client.get("67g2-p84d", query = myquery)
 facilities_db = pd.DataFrame.from_records(surroundings_data)
+facilities_db = facilities_db.drop_duplicates()
 
 # data cleaning
 print("Cleaning surroundings data")
