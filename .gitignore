@@ -5,6 +5,7 @@ __pycache__/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.ipynb
 
 # data and map folders
 cleaned-data/
@@ -15,3 +16,6 @@ app/maps/
 PlacesAPI-key.txt
 nycopendata-API-key.txt
 nycopendata-app-token.txt
+
+# html maps
+app/maps/
