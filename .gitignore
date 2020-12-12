@@ -6,9 +6,10 @@ __pycache__/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# data folders
+# data and map folders
 cleaned-data/
 raw-data/
+app/maps/
 
 # keys
 PlacesAPI-key.txt
