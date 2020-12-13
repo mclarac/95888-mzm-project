@@ -2,7 +2,7 @@
 """
 Created on Tue Dec  8 21:43:23 2020
 
-@authors: María Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
+@authors: Maria Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
 
 This script creates and stored the heatmap of crime rates
 """

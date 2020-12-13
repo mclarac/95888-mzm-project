@@ -1,5 +1,5 @@
 """
-@authors: María Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
+@authors: Maria Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
 
 This is the main module. It loads previously saved data (if the user wants so),
 runs the filtering algorithm based on the user's choices, and plots all maps and graphs.

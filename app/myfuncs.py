@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 """
-@authors: María Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
-
+@authors: Maria Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
 This module contains the main functions used by app.py
 """
 import pandas       as pd
