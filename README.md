@@ -68,4 +68,4 @@ Use these credentials to get access to our product:
 * **username**: user1
 * **password**: xzbm-VEeLRTM~7)#
 
-Finally, in [this](https://youtu.be/14XD5K5GKOo) link you find the video demonstrating our product being run
+Finally, in [this](https://youtu.be/14XD5K5GKOo) link you'll find the video demonstrating our product being run
