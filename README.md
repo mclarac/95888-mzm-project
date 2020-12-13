@@ -25,7 +25,7 @@ Followed by:
 pip install -r requirements-pip.txt
 ```
 
-> Note: installing geopandas *can* be a problem; in some computers, it installs smoothly, in others, makes you want to pound your head on the desk. So, if you face some troubles, please please be patient and follow the instructions found in [this](https://geoffboeing.com/2014/09/using-geopandas-windows/) website
+> Note: installing `geopandas` *can* be a problem; in some computers, it installs smoothly, in others, makes you want to pound your head on the desk. So, if you face some troubles, please please be patient and follow the instructions found in [this](https://geoffboeing.com/2014/09/using-geopandas-windows/) website
 
 ## Data Sources
 In order for the application to work correctly, the following files need to be stored in the path `./cleaned-data/`:
@@ -40,9 +40,12 @@ In order for the application to work correctly, the following files need to be s
 The script `nyc-socrataAPI-requests.py` reads and uses an APP token, a key ID, and a key secret. In order to avoid Professor Ostlund and TAs to sign up to NYC Open Data for an app token, the file `nycopendata-API-key.txt` will be provided so they'll be able to run the script without any problems.
 
 ### Web Scraping
-For the scripts `rental_scrape_clean.py` and `yelp_scrape_clean.py` to work correctly, you need to have installed Google Chrome in your computer. Also, you need to download and unzip the [WebDriver for Chrome](https://chromedriver.chromium.org/downloads).
+For the scripts `rental_scrape_clean.py` and `yelp_scrape_clean.py` to work correctly, follow these instructions:
 
-Note: The latter is already provided in the `app/` folder.
+* Step 1: download chrome and install it on your computer if you don’t have one yet. 
+* Step 2: check the version of your chrome driver installed at chrome://settings/help, use the first 2 digits for next step. It is recommended if you have version 86 or later.
+* Step 3: go to [WebDriver for Chrome](https://chromedriver.chromium.org/downloads), download chromedriver_win32.zip under the correction version release according to step 2. 
+* Step 4: open the downloaded zip, and extract chromedriver.exe within to the `.\app\` folder
 
 ## Running the app
 To run the app go to the Anaconda prompt and navigate to the directory where the app is located (inside the folder `./app/)` - keep in mind that the root folder *must* contain the folders `./app/`, `./raw-data/` and `./cleaned-data/`. Then, just type:
