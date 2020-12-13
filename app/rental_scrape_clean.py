@@ -1,9 +1,23 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Nov 15 21:54:45 2020
+@authors: María Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
 
-@author: mengyao and maria
+This code contains two parts:
+    Part I:
+        Scrape rental listing data from apartment.com
+        we have a base data file of previously scraped/cached rental listing data. 
+        if user chooses to refresh rental listing data, this script will 
+        only scrape new listings and update the existing file.
+    
+    Part II:
+        Clean the merged raw data of newly scraped and existing data. 
+        our rental data will contain the following attributes :
+        'name', 'address','zipcode', 'contact', 'rating', 'review count', 'laundry_code',
+        'parking_code', 'pet_code', 'pet', 'parking', '2 Bedrooms', '3 Bedrooms',
+        'Studio', '4 Bedrooms', '1 Bedrooms', '6 Bedrooms', '5 Bedrooms'
 
+Imported by: app.py
 """
 
 import selenium

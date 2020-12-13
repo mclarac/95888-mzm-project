@@ -1,3 +1,14 @@
+"""
+@authors: María Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
+
+This is the main module. It loads previously saved data (if the user wants so),
+runs the filtering algorithm based on the user's choices, and plots all maps and graphs.
+
+It depends on:
+    - rental_scrape_clean.py
+    - yelp_scrape_clean.py
+    - myfuncs.py
+"""
 from dash.dependencies           import Input, Output, State
 from dash.exceptions             import PreventUpdate
 from myfuncs                     import * 
@@ -11,13 +22,21 @@ import numpy                     as np
 import geopandas                 as gpd
 import plotly.express            as px
 import plotly.graph_objects      as go
-import plotly.figure_factory     as ff
 
 import dash
 import flask
 import os
 import datetime
 import pgeocode
+
+import window
+window.pop_window()
+
+if window.answer == 0:
+    import rental_scrape_clean
+    import yelp_scrape_clean
+else:
+    pass
 
 # path where files are stored
 path = '../cleaned-data/'
@@ -73,7 +92,9 @@ cols = ['ntaname', 'zipcode', 'name', 'address', 'contact', 'rating', 'type', 'p
 df = rental_df[cols].sort_values(by = ['price', 'rating'], ascending = [True, False])
 
 # --- yelp data ---
-# remove some duplicates
+# remove duplicate columns
+yelp_data = yelp_data.drop(columns = ['Outdoor seating'])
+# remove duplicate rows
 yelp_data = yelp_data.drop_duplicates(subset = ['names'])
 # drop rows where the food type is na (about 2% of records)
 food_types = yelp_data.dropna(subset = ['food types'])

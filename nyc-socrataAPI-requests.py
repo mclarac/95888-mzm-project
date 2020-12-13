@@ -4,7 +4,10 @@ Created on Wed Nov 18 16:23:18 2020
 @authors: María Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
 
 This script will download and clean the crime, restaurants and facilities 
-data bases by using the NYC Open Data API (Socrata)
+data bases by using the NYC Open Data API (Socrata).
+
+Note: Since this data is not updated frequently, we're using it as a one-time download.
+Therefore, it's not imported by any module
 """
 import pandas    as pd 
 import geopandas as gpd

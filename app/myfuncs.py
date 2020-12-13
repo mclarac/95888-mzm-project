@@ -1,8 +1,16 @@
+"""
+@authors: María Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
+
+This module contains the main functions used by app.py
+"""
 import pandas       as pd
 from folium.plugins import MarkerCluster
 import folium
 
 def filter_rentals(price_range, zipcodes, rental_types, laundry, parking, pets, df):
+    '''
+    Filters the rentals dataframe based on the user's choices
+    '''
     
     min_price, max_price = price_range
 
@@ -155,7 +163,10 @@ def get_ordering(distances_df):
             This function takes a pandas series or list
             and returns a re-scaled series from 0 to 100
             '''
-            return (x - x.min()) / (x.max() - x.min()) * 100
+            if len(x) == 1:
+                return 100
+            else:
+                return (x - x.min()) / (x.max() - x.min()) * 100
 
         # the places selected by the user
         top_three_places = list(distances_df.facgroup.unique())
@@ -174,7 +185,17 @@ def get_ordering(distances_df):
         return list(set(order_['zipcode_x']))
 
 def save_map(filtered_df, distances_df, best_zipcode, path = './maps/'):
-    
+    '''
+    This plots the top recommendation along with all the surrounding places
+    that are important for the user and save the map into the app/maps/ folder.
+    Every map has a unique identified, as follows:
+        YYYY-MM-DD_ZC_FirstSecondThird.htlm
+    Where:
+        ZC: Zipcode of top recommendation
+        First: place ranked as most important in user's selections
+        Second: place ranked as second in user's selections
+        Third: place ranked as third in user's selections
+    '''
     import datetime
     
     all_facilities = set(distances_df['facgroup'])
