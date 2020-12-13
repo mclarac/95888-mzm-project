@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Nov 15 21:54:45 2020
-@authors: María Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
+@authors: Maria Lara C (mlaracue), Mengyao Xu (mengyaox) and Lu Zhang (luzhang3)
 
 This code contains two parts:
     Part I:
@@ -37,7 +37,7 @@ zips = [10128,10001,10002,10003,10004,10005,10006,10007,10009,
         10020,10021,10022,10279,10280,10024,10025,10029,10031,
         10034,10036,10038,10168,10041,10169,11201,10305,11216, 
         11106,11373,11377,11378]
-print(zips) 
+#print(zips) 
 
 ##TODO:read previously scraped raw data
 old_df = pd.read_csv(r'..\raw-data\previous scraped data.csv')
